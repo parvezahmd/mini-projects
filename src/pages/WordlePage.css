@@ -4,31 +4,8 @@
   flex-direction: column;
 }
 
-.wordle-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #374151;
-  background: #1f2937;
-}
-
 .wordle-page-header h1 {
   font-size: 1.6rem;
-  font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-}
-
-.back-link {
-  display: flex;
-  align-items: center;
-  color: #9ca3af;
-  text-decoration: none;
-  transition: color 0.2s;
-  width: 60px;
-}
-
-.back-link:hover {
-  color: #f9fafb;
 }
