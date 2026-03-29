@@ -22,3 +22,16 @@
   font-weight: 700;
   letter-spacing: 1px;
 }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s;
+  width: 60px;
+}
+
+.back-link:hover {
+  color: #f9fafb;
+}

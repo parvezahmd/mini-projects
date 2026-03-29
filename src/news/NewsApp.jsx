@@ -140,14 +140,44 @@ export default function NewsApp() {
   return (
     <div className="news-app">
       <nav className="news-categories-nav">
-        {/* Mobile toggle */}
-        <button className="news-menu-toggle" onClick={() => setMenuOpen((o) => !o)}>
-          <span>{activeLabel?.icon} {activeLabel?.label}</span>
-          <span className={`news-menu-chevron${menuOpen ? ' open' : ''}`}>▾</span>
+        {/* Mobile: hamburger + active label */}
+        <button className="news-hamburger" onClick={() => setMenuOpen(true)} aria-label="Open categories">
+          <span />
+          <span />
+          <span />
         </button>
+        <span className="news-nav-active-label">
+          {activeLabel?.icon} {activeLabel?.label}
+        </span>
 
-        {/* Category list — scrollable on desktop, dropdown on mobile */}
-        <div className={`news-categories${menuOpen ? ' open' : ''}`}>
+        {/* Desktop: horizontal scrollable categories */}
+        <div className="news-categories">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              className={`news-category-btn${activeCategory === cat.id ? ' active' : ''}`}
+              onClick={() => setActiveCategory(cat.id)}
+            >
+              <span className="news-category-icon">{cat.icon}</span>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* Sidebar overlay */}
+      <div
+        className={`news-sidebar-overlay${menuOpen ? ' open' : ''}`}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      {/* Sidebar drawer */}
+      <div className={`news-sidebar${menuOpen ? ' open' : ''}`}>
+        <div className="news-sidebar-header">
+          <span className="news-sidebar-title">Categories</span>
+          <button className="news-sidebar-close" onClick={() => setMenuOpen(false)}>✕</button>
+        </div>
+        <div className="news-sidebar-list">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
@@ -159,7 +189,7 @@ export default function NewsApp() {
             </button>
           ))}
         </div>
-      </nav>
+      </div>
 
       <div className="news-content">
         {loading && (

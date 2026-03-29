@@ -21,7 +21,8 @@
 }
 
 .back-link {
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
   color: #9ca3af;
   text-decoration: none;
   transition: color 0.2s;
