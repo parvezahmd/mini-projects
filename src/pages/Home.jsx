@@ -10,6 +10,14 @@ const projects = [
     icon: '🟩',
     color: '#538d4e',
   },
+  {
+    id: 'news',
+    title: 'Global News',
+    description: 'Top 5 headlines across Tech, Sports, Business, Entertainment, Health, and Science.',
+    path: '/news',
+    icon: '📰',
+    color: '#2563eb',
+  },
 ]
 
 export default function Home() {

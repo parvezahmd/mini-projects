@@ -9,12 +9,18 @@
 
 .wordle-top-bar {
   width: 100%;
-  max-width: 360px;
+  max-width: 310px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   height: 36px;
+}
+
+@media (min-width: 640px) {
+  .wordle-top-bar {
+    max-width: 390px;
+  }
 }
 
 .wordle-message-bar {
