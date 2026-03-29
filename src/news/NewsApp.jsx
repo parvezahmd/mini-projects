@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import NewsCard from './NewsCard'
 import './NewsApp.css'
 
-const CACHE_TTL = 60 * 60 * 1000 // 1 hour
+const CACHE_TTL = 12 * 60 * 60 * 1000 // 12 hours
 
 function loadCache(category) {
   try {
@@ -118,17 +118,13 @@ export default function NewsApp() {
 
       setArticles(filtered)
       setLoading(false)
-
-      // Mark all as loading, then fetch summaries in parallel
       setSummaries(Object.fromEntries(filtered.map((a) => [a.url, 'loading'])))
-
       const finalSummaries = {}
       for (const article of filtered) {
         const summary = await fetchSummaryForArticle(article)
         finalSummaries[article.url] = summary
         setSummaries((prev) => ({ ...prev, [article.url]: summary }))
       }
-
       saveCache(category, filtered, finalSummaries)
     } catch (err) {
       setError(err.message || 'Failed to fetch news. Please try again.')

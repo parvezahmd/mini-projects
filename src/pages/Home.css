@@ -1,5 +1,5 @@
 .home {
-  min-height: 100vh;
+  flex: 1;
   padding: 2rem 1rem;
   max-width: 900px;
   margin: 0 auto;

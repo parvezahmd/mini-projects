@@ -32,12 +32,12 @@ app.post('/api/summarize', async (req, res) => {
       messages: [
         {
           role: 'user',
-          content: `Summarize this news article in 4–5 concise sentences. Cover the key facts, who is involved, and why it matters. Write the summary directly — no intro phrases like "This article..." or "The article discusses...".\n\n${articleText}`,
+          content: `Summarize this news article in 4–5 concise sentences. Cover the key facts, who is involved, and why it matters. Write the summary directly — no intro phrases like "This article..." or "The article discusses...". Use plain text only — no HTML tags, no markdown, no bullet points.\n\n${articleText}`,
         },
       ],
     })
 
-    const summary = completion.choices[0]?.message?.content?.trim() || ''
+    const summary = (completion.choices[0]?.message?.content?.trim() || '').replace(/<[^>]*>/g, '')
     res.json({ summary })
   } catch (err) {
     console.error('[summarize] Groq error:', err.message)
