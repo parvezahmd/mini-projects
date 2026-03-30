@@ -2,29 +2,41 @@ import { useState, useEffect } from 'react'
 import NewsCard from './NewsCard'
 import './NewsApp.css'
 
-const CACHE_TTL = 12 * 60 * 60 * 1000 // 12 hours
+const ARTICLE_CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
-function loadCache(category) {
+function loadArticleCache(category) {
   try {
-    const raw = localStorage.getItem(`guardian_${category}`)
+    const raw = localStorage.getItem(`guardian_articles_${category}`)
     if (!raw) return null
-    const { articles, summaries, timestamp } = JSON.parse(raw)
-    if (Date.now() - timestamp > CACHE_TTL) return null
-    return { articles, summaries }
+    const { articles, timestamp } = JSON.parse(raw)
+    if (Date.now() - timestamp > ARTICLE_CACHE_TTL) return null
+    return articles
   } catch {
     return null
   }
 }
 
-function saveCache(category, articles, summaries) {
+function saveArticleCache(category, articles) {
   try {
     localStorage.setItem(
-      `guardian_${category}`,
-      JSON.stringify({ articles, summaries, timestamp: Date.now() })
+      `guardian_articles_${category}`,
+      JSON.stringify({ articles, timestamp: Date.now() })
     )
+  } catch {}
+}
+
+function loadSummaryCache(url) {
+  try {
+    return localStorage.getItem(`guardian_summary_${btoa(url)}`) || null
   } catch {
-    // localStorage unavailable or full — silently skip
+    return null
   }
+}
+
+function saveSummaryCache(url, summary) {
+  try {
+    localStorage.setItem(`guardian_summary_${btoa(url)}`, summary)
+  } catch {}
 }
 
 const CATEGORIES = [
@@ -83,10 +95,12 @@ export default function NewsApp() {
   }, [activeCategory])
 
   async function loadNews(category) {
-    const cached = loadCache(category)
-    if (cached) {
-      setArticles(cached.articles)
-      setSummaries(cached.summaries)
+    const cachedArticles = loadArticleCache(category)
+    if (cachedArticles) {
+      setArticles(cachedArticles)
+      setSummaries(Object.fromEntries(
+        cachedArticles.map((a) => [a.url, loadSummaryCache(a.url)]).filter(([, s]) => s)
+      ))
       setError(null)
       return
     }
@@ -117,20 +131,23 @@ export default function NewsApp() {
         .map(normalizeArticle)
 
       setArticles(filtered)
+      setSummaries(Object.fromEntries(
+        filtered.map((a) => [a.url, loadSummaryCache(a.url)]).filter(([, s]) => s)
+      ))
       setLoading(false)
-      setSummaries(Object.fromEntries(filtered.map((a) => [a.url, 'loading'])))
-      const finalSummaries = {}
-      for (const article of filtered) {
-        const summary = await fetchSummaryForArticle(article)
-        finalSummaries[article.url] = summary
-        setSummaries((prev) => ({ ...prev, [article.url]: summary }))
-      }
-      saveCache(category, filtered, finalSummaries)
+      saveArticleCache(category, filtered)
     } catch (err) {
       setError(err.message || 'Failed to fetch news. Please try again.')
       setArticles([])
       setLoading(false)
     }
+  }
+
+  async function handleRequestSummary(article) {
+    setSummaries(prev => ({ ...prev, [article.url]: 'loading' }))
+    const summary = await fetchSummaryForArticle(article)
+    if (summary) saveSummaryCache(article.url, summary)
+    setSummaries(prev => ({ ...prev, [article.url]: summary }))
   }
 
   return (
@@ -213,6 +230,7 @@ export default function NewsApp() {
                 key={i}
                 article={article}
                 summary={summaries[article.url]}
+                onRequestSummary={handleRequestSummary}
               />
             ))}
           </div>

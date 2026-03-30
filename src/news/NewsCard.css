@@ -65,6 +65,12 @@
   color: #6b7280;
 }
 
+.news-card-author {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
 .news-card-title-link {
   text-decoration: none;
 }
@@ -94,6 +100,24 @@
 .news-card-desc.expanded {
   display: block;
   overflow: visible;
+}
+
+.news-card-summarize {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid #374151;
+  color: #6b7280;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.news-card-summarize:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
 }
 
 .news-card-toggle {

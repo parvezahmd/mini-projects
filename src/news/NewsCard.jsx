@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import './NewsCard.css'
 
-export default function NewsCard({ article, summary }) {
-  const { title, urlToImage, url, source, publishedAt } = article
+export default function NewsCard({ article, summary, onRequestSummary }) {
+  const { title, urlToImage, url, source, publishedAt, author } = article
   const cardRef = useRef(null)
   const collapsedHeight = useRef(null)
   const transitionListener = useRef(null)
@@ -132,6 +132,7 @@ export default function NewsCard({ article, summary }) {
         <div className="news-card-meta">
           {source?.name && <span className="news-card-source">{source.name}</span>}
           <span className="news-card-date">{date}</span>
+          {author && <span className="news-card-author">By {author}</span>}
         </div>
 
         <a href={url} target="_blank" rel="noopener noreferrer" className="news-card-title-link">
@@ -153,7 +154,11 @@ export default function NewsCard({ article, summary }) {
               </button>
             )}
           </>
-        ) : null}
+        ) : (
+          <button className="news-card-summarize" onClick={() => onRequestSummary(article)}>
+            ✦ Get AI Summary
+          </button>
+        )}
 
         <a
           href={url}
