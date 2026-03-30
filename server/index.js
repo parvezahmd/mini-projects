@@ -1,4 +1,6 @@
-import 'dotenv/config'
+import { config } from 'dotenv'
+config({ path: '.env.local' })
+config() // fallback to .env if present
 import express from 'express'
 import cors from 'cors'
 import Groq from 'groq-sdk'
