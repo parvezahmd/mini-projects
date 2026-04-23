@@ -26,14 +26,14 @@ function normalizeArticle(raw) {
   }
 }
 
-async function fetchSummaryForArticle(article) {
+async function fetchSummaryForArticle(article, category) {
   const { url, title, description, content } = article
   const fallback = [title, description, content].filter(Boolean).join('\n\n')
   try {
     const res = await fetch('/api/summarize', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, fallback }),
+      body: JSON.stringify({ url, fallback, category }),
     })
     const data = await res.json()
     return data.summary || description || null
@@ -93,7 +93,7 @@ export default function NewsApp() {
 
   async function handleRequestSummary(article) {
     setSummaries(prev => ({ ...prev, [article.url]: 'loading' }))
-    const summary = await fetchSummaryForArticle(article)
+    const summary = await fetchSummaryForArticle(article, activeCategory)
     setSummaries(prev => ({ ...prev, [article.url]: summary }))
   }
 
