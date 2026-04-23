@@ -5,7 +5,7 @@
   border: 1px solid #374151;
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s, height 1s ease-in-out;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 @media (min-width: 1024px) {
@@ -49,26 +49,32 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  min-width: 0;
 }
 
 .news-card-source {
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #3b82f6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .news-card-date {
   font-size: 0.75rem;
   color: #6b7280;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.news-card-author {
-  font-size: 0.75rem;
-  color: #6b7280;
-  font-style: italic;
+.news-card-summary-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .news-card-title-link {
@@ -176,14 +182,30 @@
   color: #60a5fa;
 }
 
-/* Hide toggle and show link only on desktop hover */
+/* Desktop layout alignment and hover behavior */
 @media (min-width: 1024px) {
   .news-card-toggle {
     display: none;
   }
 
+  /* Lock the title block to exactly 3 lines on desktop.
+     height (not min-height) forces both short and long titles to occupy
+     the same vertical space so the summary/button row aligns across cards. */
+  .news-card-title-link {
+    height: 4.5rem; /* 3 lines × 1rem font-size × 1.5 line-height */
+    overflow: hidden;
+  }
+
+  .news-card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .news-card-link {
-    opacity: 0;
+    margin-top: auto;
+    opacity: 0.6;
   }
 
   .news-card:hover .news-card-link {
