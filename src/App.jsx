@@ -2,13 +2,15 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import WordlePage from './pages/WordlePage'
 import NewsPage from './pages/NewsPage'
+import ConversionPage from './pages/ConversionPage'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import './App.css'
 
 const PAGE_CONFIG = {
-  '/wordle': { title: 'Wordle', className: 'wordle-page-header' },
-  '/news':   { title: 'Global News', className: 'news-page-header' },
+  '/wordle':  { title: 'Wordle',      className: 'wordle-page-header' },
+  '/news':    { title: 'Global News', className: 'news-page-header' },
+  '/convert': { title: 'Conversions', className: 'convert-page-header' },
 }
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/wordle" element={<WordlePage />} />
         <Route path="/news" element={<NewsPage />} />
+        <Route path="/convert" element={<ConversionPage />} />
       </Routes>
       <Footer />
     </div>

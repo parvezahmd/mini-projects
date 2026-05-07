@@ -1,0 +1,231 @@
+.conversion-page {
+  flex: 1;
+  padding: 1.5rem 1rem 2.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Tabs ── */
+.conv-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.conv-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.conv-tab:hover {
+  border-color: #6b7280;
+  color: #d1d5db;
+}
+
+.conv-tab.active {
+  background: #0d2e2e;
+  border-color: #0d9488;
+  color: #2dd4bf;
+}
+
+.conv-tab-icon { font-size: 0.95rem; line-height: 1; }
+
+/* ── Panel card ── */
+.conv-panel {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+
+.conv-panel-header {
+  margin-bottom: 1.75rem;
+}
+
+.conv-panel-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f9fafb;
+}
+
+.conv-panel-header p {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-top: 0.2rem;
+}
+
+/* ── Converter pair ── */
+.conv-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.conv-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  transition: border-color 0.15s;
+}
+
+.conv-field:focus-within {
+  border-color: #0d9488;
+}
+
+.conv-field input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f9fafb;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.conv-field input::placeholder { color: #374151; }
+
+/* hide number input spinners */
+.conv-field input[type='number']::-webkit-outer-spin-button,
+.conv-field input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.conv-field input[type='number'] { -moz-appearance: textfield; }
+
+.conv-unit {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.conv-divider {
+  text-align: center;
+  color: #4b5563;
+  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Height ft+in side-by-side */
+.height-compound { gap: 0.4rem; }
+.height-compound input { max-width: 70px; }
+
+/* Currency meta */
+.conv-meta {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+/* Status / error */
+.conv-status {
+  text-align: center;
+  padding: 2rem 0;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+.conv-error { color: #f87171; }
+
+/* ── Time Zone Panel ── */
+.tz-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.tz-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.tz-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #374151;
+}
+.tz-row:last-child { border-bottom: none; }
+
+.tz-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #2dd4bf;
+  background: #0d2e2e;
+  border: 1px solid #0d9488;
+  border-radius: 4px;
+  padding: 0.18rem 0.45rem;
+  min-width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.tz-time {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f9fafb;
+  font-variant-numeric: tabular-nums;
+}
+
+.tz-name {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-left: auto;
+}
+
+.tz-inputs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.tz-inputs input,
+.tz-inputs select {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #f9fafb;
+  padding: 0.5rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.tz-inputs input:focus,
+.tz-inputs select:focus { border-color: #0d9488; }
+
+.tz-inputs select {
+  flex: 1;
+  min-width: 200px;
+  cursor: pointer;
+}
+
+.tz-results {
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  padding: 0.25rem 0.75rem;
+}
+
+/* convert page header accent */
+.convert-page-header { border-top: 1px solid #374151; }

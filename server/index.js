@@ -62,6 +62,17 @@ app.post('/api/summarize', async (req, res) => {
   }
 })
 
+app.get('/api/exchange-rate', async (req, res) => {
+  try {
+    const response = await fetch('https://api.frankfurter.app/latest?from=USD&to=INR')
+    const data = await response.json()
+    res.json({ rate: data.rates.INR, date: data.date })
+  } catch (err) {
+    console.error('[exchange-rate] fetch error:', err.message)
+    res.status(500).json({ error: 'Failed to fetch exchange rate' })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`\n  API server running at http://localhost:${PORT}\n`)
 })

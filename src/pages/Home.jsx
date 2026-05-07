@@ -18,6 +18,14 @@ const projects = [
     icon: '📰',
     color: '#2563eb',
   },
+  {
+    id: 'convert',
+    title: 'Conversions',
+    description: 'Currency, temperature, distance, weight, height, and time zone — all in one place.',
+    path: '/convert',
+    icon: '💱',
+    color: '#0d9488',
+  },
 ]
 
 export default function Home() {
