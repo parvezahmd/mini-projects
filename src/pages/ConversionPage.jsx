@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import './ConversionPage.css'
+import Select from '../components/Select'
+import TimePicker from '../components/TimePicker'
+import DatePicker from '../components/DatePicker'
 
 const TABS = [
   { id: 'currency',    label: 'Currency',    icon: '💱' },
@@ -123,17 +126,23 @@ function CurrencyConverter() {
   }
 
   function selectFrom(id) {
-    if (id === toCcy) setToCcy(fromCcy)
+    const newTo = id === toCcy ? fromCcy : toCcy
     setFromCcy(id)
-    setFromVal('')
-    setToVal('')
+    if (id === toCcy) setToCcy(newTo)
+    const n = parseFloat(fromVal)
+    if (fromVal !== '' && !isNaN(n)) {
+      setToVal(String(round(n * crossRate(id, newTo), 4)))
+    }
   }
 
   function selectTo(id) {
-    if (id === fromCcy) setFromCcy(toCcy)
+    const newFrom = id === fromCcy ? toCcy : fromCcy
     setToCcy(id)
-    setFromVal('')
-    setToVal('')
+    if (id === fromCcy) setFromCcy(newFrom)
+    const n = parseFloat(fromVal)
+    if (fromVal !== '' && !isNaN(n)) {
+      setToVal(String(round(n * crossRate(newFrom, id), 4)))
+    }
   }
 
   function onFrom(raw) {
@@ -148,6 +157,14 @@ function CurrencyConverter() {
     setFromVal(!raw || isNaN(n) ? '' : String(round(n * crossRate(toCcy, fromCcy), 4)))
   }
 
+  function swap() {
+    setFromCcy(toCcy)
+    setToCcy(fromCcy)
+    setFromVal(toVal)
+    const n = parseFloat(toVal)
+    setToVal(!toVal || isNaN(n) ? '' : String(round(n * crossRate(toCcy, fromCcy), 4)))
+  }
+
   if (loading) return <div className="conv-status">Fetching live rates…</div>
   if (error)   return <div className="conv-status conv-error">{error}</div>
 
@@ -155,25 +172,19 @@ function CurrencyConverter() {
   const toData   = CURRENCIES.find(c => c.id === toCcy)
   const rate     = crossRate(fromCcy, toCcy)
 
+  const ccyOptions = CURRENCIES.map(c => ({ value: c.id, label: `${c.symbol} ${c.id}`, sublabel: c.name }))
+
   return (
     <div>
       <div className="conv-pair">
         <div className="conv-field">
-          <input type="number" value={fromVal} onChange={e => onFrom(e.target.value)} placeholder="0" />
-          <select className="conv-ccy-select" value={fromCcy} onChange={e => selectFrom(e.target.value)}>
-            {CURRENCIES.map(c => (
-              <option key={c.id} value={c.id}>{c.symbol} {c.id} — {c.name}</option>
-            ))}
-          </select>
+          <input id="from-amount" name="from-amount" type="number" value={fromVal} onChange={e => onFrom(e.target.value)} placeholder="0" />
+          <Select id="from-currency" name="from-currency" value={fromCcy} options={ccyOptions} onChange={selectFrom} />
         </div>
-        <div className="conv-divider">⇅</div>
+        <button type="button" className="conv-swap" onClick={swap} aria-label="Swap currencies">⇅</button>
         <div className="conv-field">
-          <input type="number" value={toVal} onChange={e => onTo(e.target.value)} placeholder="0" />
-          <select className="conv-ccy-select" value={toCcy} onChange={e => selectTo(e.target.value)}>
-            {CURRENCIES.map(c => (
-              <option key={c.id} value={c.id}>{c.symbol} {c.id} — {c.name}</option>
-            ))}
-          </select>
+          <input id="to-amount" name="to-amount" type="number" value={toVal} onChange={e => onTo(e.target.value)} placeholder="0" />
+          <Select id="to-currency" name="to-currency" value={toCcy} options={ccyOptions} onChange={selectTo} />
         </div>
       </div>
       <p className="conv-meta">1 {fromCcy} = {toData.symbol}{rate.toFixed(4)} {toCcy} · as of {rateDate}</p>
@@ -226,6 +237,7 @@ function TimeZonePanel() {
     })
   }
 
+  const tzOptions = TZ_ZONES.map(z => ({ value: z.id, label: z.label, sublabel: z.name }))
   const utcResult = date && time ? getUTCForZoneTime(date, time, srcZone) : null
 
   return (
@@ -244,13 +256,9 @@ function TimeZonePanel() {
       <div className="tz-section">
         <h3 className="tz-section-title">Convert a Time</h3>
         <div className="tz-inputs">
-          <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-          <input type="time" value={time} onChange={e => setTime(e.target.value)} />
-          <select value={srcZone} onChange={e => setSrcZone(e.target.value)}>
-            {TZ_ZONES.map(z => (
-              <option key={z.id} value={z.id}>{z.label} — {z.name}</option>
-            ))}
-          </select>
+          <DatePicker id="tz-date" name="tz-date" value={date} onChange={setDate} />
+          <TimePicker id="tz-time" name="tz-time" value={time} onChange={setTime} />
+          <Select id="src-zone" name="src-zone" value={srcZone} options={tzOptions} onChange={setSrcZone} />
         </div>
         {utcResult && (
           <div className="tz-results">

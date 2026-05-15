@@ -1,7 +1,7 @@
 .conversion-page {
   flex: 1;
   padding: 1.5rem 1rem 2.5rem;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   width: 100%;
 }
@@ -81,7 +81,18 @@
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 0.8rem 1rem;
-  transition: border-color 0.15s;
+  position: relative;
+  transition: border-color 0.15s, border-radius 0.1s;
+}
+
+.conv-field .sel {
+  position: static;
+}
+
+.conv-field:has(.sel-trigger.open) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
 }
 
 .conv-field:focus-within {
@@ -121,6 +132,27 @@
   font-size: 1.1rem;
   line-height: 1;
   user-select: none;
+}
+
+.conv-swap {
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  user-select: none;
+}
+
+.conv-swap:hover {
+  color: var(--color-teal);
+  border-color: var(--color-teal-border);
+  background: var(--color-teal-bg);
 }
 
 /* Height ft+in side-by-side */
@@ -194,8 +226,8 @@
 
 .tz-inputs {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
 
@@ -215,10 +247,56 @@
 .tz-inputs input:focus,
 .tz-inputs select:focus { border-color: var(--color-teal-border); }
 
-.tz-inputs select {
+.tz-inputs > .sel,
+.tz-inputs .tp,
+.tz-inputs .dtp {
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  transition: border-color 0.15s, border-radius 0.1s;
+  width: 100%;
+}
+
+.tz-inputs > .sel {
   flex: 1;
-  min-width: 200px;
-  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .tz-inputs {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .tz-inputs > .sel,
+  .tz-inputs .tp,
+  .tz-inputs .dtp {
+    width: auto;
+  }
+  .tz-inputs > .sel {
+    min-width: 200px;
+  }
+  .tz-inputs .tp {
+    min-width: 180px;
+  }
+  .tz-inputs .dtp {
+    min-width: 260px;
+  }
+}
+
+.tz-inputs > .sel:has(.sel-trigger.open),
+.tz-inputs .tp:has(.tp-trigger.open),
+.tz-inputs .dtp:has(.dtp-trigger.open) {
+  border-color: var(--color-teal-border);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+
+.tz-inputs > .sel .sel-trigger {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0;
+  font-size: 0.875rem;
 }
 
 .tz-results {
@@ -228,28 +306,6 @@
   padding: 0.25rem 0.75rem;
 }
 
-/* ── Currency inline dropdown ── */
-.conv-ccy-select {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--color-text-secondary);
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  flex-shrink: 0;
-  max-width: 9rem;
-}
-
-.conv-ccy-select:focus {
-  color: var(--color-teal);
-}
-
-.conv-ccy-select option {
-  background: var(--color-bg-surface);
-  color: var(--color-text-primary);
-}
 
 /* convert page header accent */
 .convert-page-header { border-top: 1px solid var(--color-border); }

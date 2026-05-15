@@ -1,0 +1,127 @@
+@keyframes sel-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+.sel {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sel-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.sel-trigger:hover {
+  color: var(--color-teal);
+}
+
+.sel-trigger.open {
+  color: var(--color-teal);
+}
+
+.sel-trigger-text {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.sel-label {
+  color: inherit;
+}
+
+.sel-sublabel {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.sel-chevron {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition: transform 0.2s ease, color 0.15s;
+}
+
+.sel-trigger.open .sel-chevron,
+.sel-trigger:hover .sel-chevron {
+  color: var(--color-teal);
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.sel-dropdown {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: 100%;
+  width: auto;
+  background: rgba(31, 41, 55, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-teal-border);
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 12px 12px;
+  padding: 0.35rem;
+  list-style: none;
+  z-index: 100;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  animation: sel-open 0.15s ease-out forwards;
+  transform-origin: top center;
+}
+
+.sel-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, transform 0.1s;
+}
+
+.sel-option:hover {
+  background: var(--color-bg-deep);
+  color: var(--color-text-primary);
+  transform: translateX(1px);
+}
+
+.sel-option.selected {
+  color: var(--color-teal);
+  background: var(--color-teal-bg);
+}
+
+
+.sel-opt-sublabel {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.sel-check {
+  flex-shrink: 0;
+  color: var(--color-teal);
+  opacity: 0.9;
+  margin-left: 0.5rem;
+}
