@@ -87,10 +87,11 @@ function HeightConverter() {
 }
 
 const CURRENCIES = [
-  { id: 'USD', symbol: '$' },
-  { id: 'INR', symbol: '₹' },
-  { id: 'GBP', symbol: '£' },
-  { id: 'EUR', symbol: '€' },
+  { id: 'USD', symbol: '$',   name: 'US Dollar'    },
+  { id: 'INR', symbol: '₹',   name: 'Indian Rupee' },
+  { id: 'GBP', symbol: '£',   name: 'British Pound'},
+  { id: 'EUR', symbol: '€',   name: 'Euro'         },
+  { id: 'AED', symbol: 'AED', name: 'UAE Dirham'   },
 ]
 
 function CurrencyConverter() {
@@ -156,48 +157,26 @@ function CurrencyConverter() {
 
   return (
     <div>
-      <div className="conv-ccy-selectors">
-        <div className="conv-ccy-row">
-          <span className="conv-ccy-label">From</span>
-          <div className="conv-ccy-pills">
-            {CURRENCIES.map(c => (
-              <button
-                key={c.id}
-                className={`conv-ccy-pill${fromCcy === c.id ? ' active' : ''}`}
-                onClick={() => selectFrom(c.id)}
-              >
-                {c.symbol} {c.id}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="conv-ccy-row">
-          <span className="conv-ccy-label">To</span>
-          <div className="conv-ccy-pills">
-            {CURRENCIES.map(c => (
-              <button
-                key={c.id}
-                className={`conv-ccy-pill${toCcy === c.id ? ' active' : ''}`}
-                onClick={() => selectTo(c.id)}
-              >
-                {c.symbol} {c.id}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
       <div className="conv-pair">
         <div className="conv-field">
           <input type="number" value={fromVal} onChange={e => onFrom(e.target.value)} placeholder="0" />
-          <span className="conv-unit">{fromCcy} {fromData.symbol}</span>
+          <select className="conv-ccy-select" value={fromCcy} onChange={e => selectFrom(e.target.value)}>
+            {CURRENCIES.map(c => (
+              <option key={c.id} value={c.id}>{c.symbol} {c.id} — {c.name}</option>
+            ))}
+          </select>
         </div>
         <div className="conv-divider">⇅</div>
         <div className="conv-field">
           <input type="number" value={toVal} onChange={e => onTo(e.target.value)} placeholder="0" />
-          <span className="conv-unit">{toCcy} {toData.symbol}</span>
+          <select className="conv-ccy-select" value={toCcy} onChange={e => selectTo(e.target.value)}>
+            {CURRENCIES.map(c => (
+              <option key={c.id} value={c.id}>{c.symbol} {c.id} — {c.name}</option>
+            ))}
+          </select>
         </div>
       </div>
-      <p className="conv-meta">1 {fromCcy} = {toData.symbol}{rate.toFixed(4)} · as of {rateDate}</p>
+      <p className="conv-meta">1 {fromCcy} = {toData.symbol}{rate.toFixed(4)} {toCcy} · as of {rateDate}</p>
     </div>
   )
 }
@@ -289,7 +268,7 @@ function TimeZonePanel() {
 }
 
 const PANELS = {
-  currency:    { title: 'USD Exchange',      desc: 'Live rates via Frankfurter — INR, GBP, EUR', Component: CurrencyConverter },
+  currency:    { title: 'Currency Exchange',  desc: 'Live rates via Frankfurter',                 Component: CurrencyConverter },
   temperature: { title: '°C ↔ °F',         desc: 'Celsius and Fahrenheit',                  Component: () => <PairConverter fromLabel="°C  Celsius" toLabel="°F  Fahrenheit" toFn={c => c * 9 / 5 + 32} fromFn={f => (f - 32) * 5 / 9} decimals={2} /> },
   distance:    { title: 'Miles ↔ KM',      desc: 'Miles and Kilometers',                    Component: () => <PairConverter fromLabel="mi  Miles"   toLabel="km  Kilometers" toFn={mi => mi * 1.60934}  fromFn={km => km / 1.60934}  decimals={3} /> },
   weight:      { title: 'lbs ↔ kg',        desc: 'Pounds and Kilograms',                    Component: () => <PairConverter fromLabel="lbs  Pounds" toLabel="kg  Kilograms"  toFn={lb => lb * 0.453592} fromFn={kg => kg / 0.453592} decimals={3} /> },
