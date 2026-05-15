@@ -1,8 +1,8 @@
 .news-card {
   display: flex;
   flex-direction: column;
-  background: #1f2937;
-  border: 1px solid #374151;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -10,7 +10,7 @@
 
 @media (min-width: 1024px) {
   .news-card:hover {
-    border-color: #4b5563;
+    border-color: var(--color-text-muted);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 }
@@ -57,7 +57,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.5px;
-  color: #2dd4bf;
+  color: var(--color-teal);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -66,7 +66,7 @@
 
 .news-card-date {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--color-text-secondary);
   flex-shrink: 0;
   white-space: nowrap;
 }
@@ -82,20 +82,20 @@
 }
 
 .news-card-title-link:hover .news-card-title {
-  color: #93c5fd;
+  color: var(--color-teal);
 }
 
 .news-card-title {
   font-size: 1rem;
   font-weight: 600;
-  color: #f9fafb;
+  color: var(--color-text-primary);
   line-height: 1.5;
   margin: 0;
 }
 
 .news-card-desc {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--color-text-tertiary);
   line-height: 1.6;
   white-space: pre-line;
   display: -webkit-box;
@@ -112,8 +112,8 @@
 .news-card-summarize {
   align-self: flex-start;
   background: transparent;
-  border: 1px solid #374151;
-  color: #6b7280;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   font-size: 0.78rem;
   font-weight: 500;
   padding: 0.35rem 0.75rem;
@@ -123,16 +123,16 @@
 }
 
 .news-card-summarize:hover {
-  background: #0d2e2e;
-  border-color: #0d9488;
-  color: #2dd4bf;
+  background: var(--color-teal-bg);
+  border-color: var(--color-teal-border);
+  color: var(--color-teal);
 }
 
 .news-card-toggle {
   align-self: flex-start;
   background: none;
   border: none;
-  color: #3b82f6;
+  color: var(--color-teal);
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0;
@@ -142,7 +142,7 @@
 }
 
 .news-card-toggle:hover {
-  color: #60a5fa;
+  color: var(--color-teal-light);
 }
 
 /* Loading skeleton */
@@ -155,7 +155,7 @@
 
 .skeleton-line {
   height: 0.85rem;
-  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background: linear-gradient(90deg, var(--color-border) 25%, var(--color-text-muted) 50%, var(--color-border) 75%);
   background-size: 200% 100%;
   border-radius: 4px;
   animation: shimmer 1.4s infinite;
@@ -174,14 +174,14 @@
   align-self: flex-start;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--color-teal);
   text-decoration: none;
   margin-top: 0.25rem;
   transition: color 0.15s, opacity 0.3s ease;
 }
 
 .news-card-link:hover {
-  color: #60a5fa;
+  color: var(--color-teal-light);
 }
 
 /* Desktop layout alignment and hover behavior */

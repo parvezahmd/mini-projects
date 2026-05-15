@@ -5,11 +5,35 @@
 }
 
 :root {
+  /* Backgrounds */
+  --color-bg-deep:        #111827;
+  --color-bg-surface:     #1f2937;
+
+  /* Borders */
+  --color-border:         #374151;
+
+  /* Text scale */
+  --color-text-muted:     #4b5563;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary:  #9ca3af;
+  --color-text-light:     #d1d5db;
+  --color-text-primary:   #f9fafb;
+
+  /* Teal accent */
+  --color-teal-bg:        #0d2e2e;
+  --color-teal-border:    #0d9488;
+  --color-teal:           #2dd4bf;
+  --color-teal-light:     #5eead4;
+
+  /* Status */
+  --color-error:          #f87171;
+  --color-blue:           #3b82f6;
+
   font-family: 'Segoe UI', system-ui, Arial, sans-serif;
   font-weight: 400;
   color-scheme: dark;
-  background-color: #111827;
-  color: #f9fafb;
+  background-color: var(--color-bg-deep);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 

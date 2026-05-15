@@ -5,7 +5,7 @@
 }
 
 .news-page-header {
-  border-top: 1px solid #374151;
+  border-top: 1px solid var(--color-border);
 }
 
 .news-page-header h1 {
