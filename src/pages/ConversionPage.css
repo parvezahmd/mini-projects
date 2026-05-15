@@ -228,33 +228,57 @@
   padding: 0.25rem 0.75rem;
 }
 
-/* ── Currency pair selector ── */
-.conv-currency-pairs {
+/* ── Currency from/to selector ── */
+.conv-ccy-selectors {
   display: flex;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 1.25rem;
 }
 
-.conv-currency-pair-btn {
+.conv-ccy-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.conv-ccy-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  width: 2.25rem;
+  flex-shrink: 0;
+}
+
+.conv-ccy-pills {
+  display: flex;
+  gap: 0.35rem;
   flex: 1;
-  padding: 0.4rem 0;
+}
+
+.conv-ccy-pill {
+  flex: 1;
+  padding: 0.35rem 0;
   background: var(--color-bg-deep);
   border: 1px solid var(--color-border);
   border-radius: 999px;
   color: var(--color-text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
 }
 
-.conv-currency-pair-btn:hover {
+.conv-ccy-pill:hover {
   background: var(--color-teal-bg);
   border-color: var(--color-border);
   color: var(--color-text-tertiary);
 }
 
-.conv-currency-pair-btn.active {
+.conv-ccy-pill.active {
   background: var(--color-teal-bg);
   border-color: var(--color-teal-border);
   color: var(--color-teal);

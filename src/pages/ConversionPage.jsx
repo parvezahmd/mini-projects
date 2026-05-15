@@ -86,10 +86,11 @@ function HeightConverter() {
   )
 }
 
-const CURRENCY_PAIRS = [
-  { id: 'INR', symbol: '₹', label: 'INR' },
-  { id: 'GBP', symbol: '£', label: 'GBP' },
-  { id: 'EUR', symbol: '€', label: 'EUR' },
+const CURRENCIES = [
+  { id: 'USD', symbol: '$' },
+  { id: 'INR', symbol: '₹' },
+  { id: 'GBP', symbol: '£' },
+  { id: 'EUR', symbol: '€' },
 ]
 
 function CurrencyConverter() {
@@ -97,15 +98,16 @@ function CurrencyConverter() {
   const [rateDate, setRateDate] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [activePair, setActivePair] = useState('INR')
-  const [usd, setUsd] = useState('')
-  const [foreign, setForeign] = useState('')
+  const [fromCcy, setFromCcy] = useState('USD')
+  const [toCcy, setToCcy] = useState('INR')
+  const [fromVal, setFromVal] = useState('')
+  const [toVal, setToVal] = useState('')
 
   useEffect(() => {
     fetch('/api/exchange-rate')
       .then(r => r.json())
       .then(data => {
-        setRates(data.rates)
+        setRates({ USD: 1, ...data.rates })
         setRateDate(data.date)
         setLoading(false)
       })
@@ -115,55 +117,87 @@ function CurrencyConverter() {
       })
   }, [])
 
-  function selectPair(id) {
-    setActivePair(id)
-    setUsd('')
-    setForeign('')
+  function crossRate(from, to) {
+    return rates[to] / rates[from]
   }
 
-  const pair = CURRENCY_PAIRS.find(p => p.id === activePair)
-  const rate = rates?.[activePair]
-
-  function onUsd(raw) {
-    setUsd(raw)
-    const n = parseFloat(raw)
-    setForeign(!raw || isNaN(n) ? '' : String(round(n * rate, 2)))
+  function selectFrom(id) {
+    if (id === toCcy) setToCcy(fromCcy)
+    setFromCcy(id)
+    setFromVal('')
+    setToVal('')
   }
 
-  function onForeign(raw) {
-    setForeign(raw)
+  function selectTo(id) {
+    if (id === fromCcy) setFromCcy(toCcy)
+    setToCcy(id)
+    setFromVal('')
+    setToVal('')
+  }
+
+  function onFrom(raw) {
+    setFromVal(raw)
     const n = parseFloat(raw)
-    setUsd(!raw || isNaN(n) ? '' : String(round(n / rate, 4)))
+    setToVal(!raw || isNaN(n) ? '' : String(round(n * crossRate(fromCcy, toCcy), 4)))
+  }
+
+  function onTo(raw) {
+    setToVal(raw)
+    const n = parseFloat(raw)
+    setFromVal(!raw || isNaN(n) ? '' : String(round(n * crossRate(toCcy, fromCcy), 4)))
   }
 
   if (loading) return <div className="conv-status">Fetching live rates…</div>
   if (error)   return <div className="conv-status conv-error">{error}</div>
 
+  const fromData = CURRENCIES.find(c => c.id === fromCcy)
+  const toData   = CURRENCIES.find(c => c.id === toCcy)
+  const rate     = crossRate(fromCcy, toCcy)
+
   return (
     <div>
-      <div className="conv-currency-pairs">
-        {CURRENCY_PAIRS.map(p => (
-          <button
-            key={p.id}
-            className={`conv-currency-pair-btn${activePair === p.id ? ' active' : ''}`}
-            onClick={() => selectPair(p.id)}
-          >
-            {p.symbol} {p.label}
-          </button>
-        ))}
+      <div className="conv-ccy-selectors">
+        <div className="conv-ccy-row">
+          <span className="conv-ccy-label">From</span>
+          <div className="conv-ccy-pills">
+            {CURRENCIES.map(c => (
+              <button
+                key={c.id}
+                className={`conv-ccy-pill${fromCcy === c.id ? ' active' : ''}`}
+                onClick={() => selectFrom(c.id)}
+              >
+                {c.symbol} {c.id}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="conv-ccy-row">
+          <span className="conv-ccy-label">To</span>
+          <div className="conv-ccy-pills">
+            {CURRENCIES.map(c => (
+              <button
+                key={c.id}
+                className={`conv-ccy-pill${toCcy === c.id ? ' active' : ''}`}
+                onClick={() => selectTo(c.id)}
+              >
+                {c.symbol} {c.id}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       <div className="conv-pair">
         <div className="conv-field">
-          <input type="number" value={usd} onChange={e => onUsd(e.target.value)} placeholder="0" />
-          <span className="conv-unit">USD $</span>
+          <input type="number" value={fromVal} onChange={e => onFrom(e.target.value)} placeholder="0" />
+          <span className="conv-unit">{fromCcy} {fromData.symbol}</span>
         </div>
         <div className="conv-divider">⇅</div>
         <div className="conv-field">
-          <input type="number" value={foreign} onChange={e => onForeign(e.target.value)} placeholder="0" />
-          <span className="conv-unit">{pair.id} {pair.symbol}</span>
+          <input type="number" value={toVal} onChange={e => onTo(e.target.value)} placeholder="0" />
+          <span className="conv-unit">{toCcy} {toData.symbol}</span>
         </div>
       </div>
-      <p className="conv-meta">1 USD = {pair.symbol}{rate?.toFixed(4)} · as of {rateDate}</p>
+      <p className="conv-meta">1 {fromCcy} = {toData.symbol}{rate.toFixed(4)} · as of {rateDate}</p>
     </div>
   )
 }
