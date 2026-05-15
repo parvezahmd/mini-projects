@@ -98,7 +98,7 @@ function CurrencyConverter() {
     fetch('/api/exchange-rate')
       .then(r => r.json())
       .then(data => {
-        setRate(data.rates.INR)
+        setRate(data.rate)
         setRateDate(data.date)
         setLoading(false)
       })
