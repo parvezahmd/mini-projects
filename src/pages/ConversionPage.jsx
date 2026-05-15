@@ -95,15 +95,15 @@ function CurrencyConverter() {
   const [inr, setInr] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/exchange-rate')
+    fetch('https://api.frankfurter.app/latest?from=USD&to=INR')
       .then(r => r.json())
       .then(data => {
-        setRate(data.rate)
+        setRate(data.rates.INR)
         setRateDate(data.date)
         setLoading(false)
       })
       .catch(() => {
-        setError('Could not fetch live rate — is the dev server running?')
+        setError('Could not fetch live rate')
         setLoading(false)
       })
   }, [])
