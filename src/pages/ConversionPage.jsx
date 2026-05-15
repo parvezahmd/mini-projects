@@ -86,19 +86,26 @@ function HeightConverter() {
   )
 }
 
+const CURRENCY_PAIRS = [
+  { id: 'INR', symbol: '₹', label: 'INR' },
+  { id: 'GBP', symbol: '£', label: 'GBP' },
+  { id: 'EUR', symbol: '€', label: 'EUR' },
+]
+
 function CurrencyConverter() {
-  const [rate, setRate] = useState(null)
+  const [rates, setRates] = useState(null)
   const [rateDate, setRateDate] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [activePair, setActivePair] = useState('INR')
   const [usd, setUsd] = useState('')
-  const [inr, setInr] = useState('')
+  const [foreign, setForeign] = useState('')
 
   useEffect(() => {
     fetch('/api/exchange-rate')
       .then(r => r.json())
       .then(data => {
-        setRate(data.rate)
+        setRates(data.rates)
         setRateDate(data.date)
         setLoading(false)
       })
@@ -108,23 +115,43 @@ function CurrencyConverter() {
       })
   }, [])
 
+  function selectPair(id) {
+    setActivePair(id)
+    setUsd('')
+    setForeign('')
+  }
+
+  const pair = CURRENCY_PAIRS.find(p => p.id === activePair)
+  const rate = rates?.[activePair]
+
   function onUsd(raw) {
     setUsd(raw)
     const n = parseFloat(raw)
-    setInr(!raw || isNaN(n) ? '' : String(round(n * rate, 2)))
+    setForeign(!raw || isNaN(n) ? '' : String(round(n * rate, 2)))
   }
 
-  function onInr(raw) {
-    setInr(raw)
+  function onForeign(raw) {
+    setForeign(raw)
     const n = parseFloat(raw)
     setUsd(!raw || isNaN(n) ? '' : String(round(n / rate, 4)))
   }
 
-  if (loading) return <div className="conv-status">Fetching live rate…</div>
+  if (loading) return <div className="conv-status">Fetching live rates…</div>
   if (error)   return <div className="conv-status conv-error">{error}</div>
 
   return (
     <div>
+      <div className="conv-currency-pairs">
+        {CURRENCY_PAIRS.map(p => (
+          <button
+            key={p.id}
+            className={`conv-currency-pair-btn${activePair === p.id ? ' active' : ''}`}
+            onClick={() => selectPair(p.id)}
+          >
+            {p.symbol} {p.label}
+          </button>
+        ))}
+      </div>
       <div className="conv-pair">
         <div className="conv-field">
           <input type="number" value={usd} onChange={e => onUsd(e.target.value)} placeholder="0" />
@@ -132,11 +159,11 @@ function CurrencyConverter() {
         </div>
         <div className="conv-divider">⇅</div>
         <div className="conv-field">
-          <input type="number" value={inr} onChange={e => onInr(e.target.value)} placeholder="0" />
-          <span className="conv-unit">INR ₹</span>
+          <input type="number" value={foreign} onChange={e => onForeign(e.target.value)} placeholder="0" />
+          <span className="conv-unit">{pair.id} {pair.symbol}</span>
         </div>
       </div>
-      <p className="conv-meta">1 USD = ₹{rate.toFixed(2)} · as of {rateDate}</p>
+      <p className="conv-meta">1 USD = {pair.symbol}{rate?.toFixed(4)} · as of {rateDate}</p>
     </div>
   )
 }
@@ -228,7 +255,7 @@ function TimeZonePanel() {
 }
 
 const PANELS = {
-  currency:    { title: 'USD ↔ INR',       desc: 'Live exchange rate via Frankfurter',      Component: CurrencyConverter },
+  currency:    { title: 'USD Exchange',      desc: 'Live rates via Frankfurter — INR, GBP, EUR', Component: CurrencyConverter },
   temperature: { title: '°C ↔ °F',         desc: 'Celsius and Fahrenheit',                  Component: () => <PairConverter fromLabel="°C  Celsius" toLabel="°F  Fahrenheit" toFn={c => c * 9 / 5 + 32} fromFn={f => (f - 32) * 5 / 9} decimals={2} /> },
   distance:    { title: 'Miles ↔ KM',      desc: 'Miles and Kilometers',                    Component: () => <PairConverter fromLabel="mi  Miles"   toLabel="km  Kilometers" toFn={mi => mi * 1.60934}  fromFn={km => km / 1.60934}  decimals={3} /> },
   weight:      { title: 'lbs ↔ kg',        desc: 'Pounds and Kilograms',                    Component: () => <PairConverter fromLabel="lbs  Pounds" toLabel="kg  Kilograms"  toFn={lb => lb * 0.453592} fromFn={kg => kg / 0.453592} decimals={3} /> },
