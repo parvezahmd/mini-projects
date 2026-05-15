@@ -95,7 +95,7 @@ function CurrencyConverter() {
   const [inr, setInr] = useState('')
 
   useEffect(() => {
-    fetch('https://api.frankfurter.app/latest?from=USD&to=INR')
+    fetch('/api/exchange-rate')
       .then(r => r.json())
       .then(data => {
         setRate(data.rates.INR)
