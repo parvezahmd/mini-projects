@@ -286,22 +286,63 @@ const PANELS = {
 
 export default function ConversionPage() {
   const [active, setActive] = useState('currency')
+  const [menuOpen, setMenuOpen] = useState(false)
   const { title, desc, Component } = PANELS[active]
+  const activeTab = TABS.find(t => t.id === active)
 
   return (
     <div className="conversion-page">
-      <nav className="conv-tabs">
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            className={`conv-tab${active === tab.id ? ' active' : ''}`}
-            onClick={() => setActive(tab.id)}
-          >
-            <span className="conv-tab-icon">{tab.icon}</span>
-            <span className="conv-tab-label">{tab.label}</span>
-          </button>
-        ))}
+      <nav className="conv-tabs-nav">
+        {/* Mobile: hamburger + active label */}
+        <button className="conv-hamburger" onClick={() => setMenuOpen(true)} aria-label="Open categories">
+          <span />
+          <span />
+          <span />
+        </button>
+        <span className="conv-nav-active-label">
+          {activeTab?.icon} {activeTab?.label}
+        </span>
+
+        {/* Desktop: horizontal tabs */}
+        <div className="conv-tabs">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`conv-tab${active === tab.id ? ' active' : ''}`}
+              onClick={() => setActive(tab.id)}
+            >
+              <span className="conv-tab-icon">{tab.icon}</span>
+              <span className="conv-tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </nav>
+
+      {/* Sidebar overlay */}
+      <div
+        className={`conv-sidebar-overlay${menuOpen ? ' open' : ''}`}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      {/* Sidebar drawer */}
+      <div className={`conv-sidebar${menuOpen ? ' open' : ''}`}>
+        <div className="conv-sidebar-header">
+          <span className="conv-sidebar-title">Conversions</span>
+          <button className="conv-sidebar-close" onClick={() => setMenuOpen(false)}>✕</button>
+        </div>
+        <div className="conv-sidebar-list">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`conv-tab${active === tab.id ? ' active' : ''}`}
+              onClick={() => { setActive(tab.id); setMenuOpen(false) }}
+            >
+              <span className="conv-tab-icon">{tab.icon}</span>
+              <span className="conv-tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="conv-panel">
         <div className="conv-panel-header">
