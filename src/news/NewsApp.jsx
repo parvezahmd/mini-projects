@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import NewsCard from './NewsCard'
+import MobileNavMenu from '../components/MobileNavMenu'
 import './NewsApp.css'
 
 const CATEGORIES = [
@@ -48,9 +49,6 @@ export default function NewsApp() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [summaries, setSummaries] = useState({})
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  const activeLabel = CATEGORIES.find((c) => c.id === activeCategory)
 
   useEffect(() => {
     loadNews(activeCategory)
@@ -99,57 +97,13 @@ export default function NewsApp() {
 
   return (
     <div className="news-app">
-      <nav className="news-categories-nav">
-        {/* Mobile: hamburger + active label */}
-        <button className="news-hamburger" onClick={() => setMenuOpen(true)} aria-label="Open categories">
-          <span />
-          <span />
-          <span />
-        </button>
-        <span className="news-nav-active-label">
-          {activeLabel?.icon} {activeLabel?.label}
-        </span>
-
-        {/* Desktop: horizontal scrollable categories */}
-        <div className="news-categories">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              className={`news-category-btn${activeCategory === cat.id ? ' active' : ''}`}
-              onClick={() => setActiveCategory(cat.id)}
-            >
-              <span className="news-category-icon">{cat.icon}</span>
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </nav>
-
-      {/* Sidebar overlay */}
-      <div
-        className={`news-sidebar-overlay${menuOpen ? ' open' : ''}`}
-        onClick={() => setMenuOpen(false)}
+      <MobileNavMenu
+        items={CATEGORIES}
+        active={activeCategory}
+        onSelect={setActiveCategory}
+        title="Categories"
+        desktopLayout="scroll"
       />
-
-      {/* Sidebar drawer */}
-      <div className={`news-sidebar${menuOpen ? ' open' : ''}`}>
-        <div className="news-sidebar-header">
-          <span className="news-sidebar-title">Categories</span>
-          <button className="news-sidebar-close" onClick={() => setMenuOpen(false)}>✕</button>
-        </div>
-        <div className="news-sidebar-list">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              className={`news-category-btn${activeCategory === cat.id ? ' active' : ''}`}
-              onClick={() => { setActiveCategory(cat.id); setMenuOpen(false) }}
-            >
-              <span className="news-category-icon">{cat.icon}</span>
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       <div className="news-content">
         {loading && (
