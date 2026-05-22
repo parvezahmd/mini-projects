@@ -26,6 +26,14 @@ const projects = [
     icon: '💱',
     color: '#0d9488',
   },
+  {
+    id: 'weather',
+    title: 'Weather',
+    description: 'Current conditions, 10-day forecast, and monthly climate averages for any city worldwide.',
+    path: '/weather',
+    icon: '⛅',
+    color: '#0284c7',
+  },
 ]
 
 export default function Home() {

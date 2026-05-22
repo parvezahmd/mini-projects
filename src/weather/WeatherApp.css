@@ -1,0 +1,432 @@
+.weather-app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* ── Setup / location picker ──────────────────────────────── */
+.weather-setup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem 5rem;
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.weather-setup-icon {
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.weather-setup-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.weather-setup-sub {
+  font-size: 0.95rem;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.25rem;
+}
+
+/* ── Search ───────────────────────────────────────────────── */
+.weather-search-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.weather-search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.15s;
+}
+
+.weather-search-field:focus-within {
+  border-color: var(--color-teal-border);
+}
+
+.weather-search-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.weather-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.weather-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ── Suggestions dropdown ─────────────────────────────────── */
+.weather-suggestions {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--color-bg-deep);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.weather-suggestion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+
+.weather-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.weather-suggestion-item:hover {
+  background: var(--color-bg-surface);
+}
+
+.suggestion-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.suggestion-meta {
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ── Geolocation button ───────────────────────────────────── */
+.weather-geo-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.weather-geo-btn:hover {
+  border-color: var(--color-teal-border);
+  color: var(--color-teal);
+}
+
+.weather-geo-error {
+  font-size: 0.82rem;
+  color: var(--color-error);
+}
+
+/* ── Location bar ─────────────────────────────────────────── */
+.weather-location-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.5rem;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.weather-location-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.weather-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── °C / °F segmented toggle ─────────────────────────────── */
+.weather-unit-toggle {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.weather-unit-toggle button {
+  background: none;
+  border: none;
+  border-right: 1px solid var(--color-border);
+  color: var(--color-text-tertiary);
+  font-size: 0.78rem;
+  font-family: inherit;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.weather-unit-toggle button:last-child {
+  border-right: none;
+}
+
+.weather-unit-toggle button.active {
+  background: var(--color-teal-bg);
+  color: var(--color-teal);
+}
+
+.weather-change-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  font-family: inherit;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.weather-change-btn:hover {
+  border-color: var(--color-teal-border);
+  color: var(--color-teal);
+}
+
+/* ── DesktopNavMenu override (not sticky here) ────────────── */
+.weather-dnm {
+  position: static;
+}
+
+/* ── Content area ─────────────────────────────────────────── */
+.weather-content {
+  flex: 1;
+  padding: 1.5rem 1.5rem 3rem;
+  max-width: 700px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── Loading / error ──────────────────────────────────────── */
+.weather-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 4rem 0;
+  color: var(--color-text-tertiary);
+  font-size: 0.9rem;
+}
+
+.weather-status-error { color: var(--color-error); }
+.weather-status-error p {
+  font-size: 0.875rem;
+  color: var(--color-text-tertiary);
+}
+
+.weather-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-teal);
+  border-radius: 50%;
+  animation: w-spin 0.7s linear infinite;
+}
+
+@keyframes w-spin { to { transform: rotate(360deg); } }
+
+/* ── Current view ─────────────────────────────────────────── */
+.weather-current {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.weather-icon-xl {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.weather-temp-xl {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-condition {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.weather-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.weather-stat {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-secondary);
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ── 10-day forecast ──────────────────────────────────────── */
+.weather-forecast {
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.forecast-row:last-child { border-bottom: none; }
+
+.forecast-day {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  min-width: 85px;
+  flex-shrink: 0;
+}
+
+.forecast-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+.forecast-label {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  min-width: 0;
+}
+
+.forecast-range {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.forecast-lo   { color: var(--color-text-secondary); }
+.forecast-dash { color: var(--color-text-muted); }
+.forecast-hi   { color: var(--color-text-primary); }
+
+.forecast-rain {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Monthly view ─────────────────────────────────────────── */
+.weather-monthly {
+  display: flex;
+  flex-direction: column;
+}
+
+.monthly-note {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.monthly-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.monthly-row:last-child { border-bottom: none; }
+
+.monthly-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  min-width: 36px;
+  flex-shrink: 0;
+}
+
+.monthly-range {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.monthly-lo { color: var(--color-text-secondary); }
+.monthly-hi { color: var(--color-text-primary); }
+
+.monthly-rain {
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (min-width: 600px) {
+  .weather-stats {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 100%;
+  }
+  .forecast-day { min-width: 130px; }
+}
