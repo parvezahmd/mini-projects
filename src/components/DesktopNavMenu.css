@@ -1,0 +1,60 @@
+/* ── Nav wrapper ── */
+.dnm-nav {
+  position: sticky;
+  top: 60px;
+  z-index: 10;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Items container ── */
+.dnm-items {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  width: 100%;
+}
+
+.dnm-items::-webkit-scrollbar {
+  display: none;
+}
+
+.dnm-items--wrap {
+  flex-wrap: wrap;
+  overflow-x: unset;
+}
+
+/* ── Item button ── */
+.dnm-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.dnm-item:hover {
+  background: var(--color-teal-bg);
+  border-color: var(--color-border);
+  color: var(--color-text-tertiary);
+}
+
+.dnm-item.active {
+  background: var(--color-teal-bg);
+  border-color: var(--color-teal-border);
+  color: var(--color-teal);
+}
+
+.dnm-item-icon {
+  font-size: 1rem;
+}

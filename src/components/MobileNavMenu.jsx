@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import DesktopNavMenu from './DesktopNavMenu'
 import './MobileNavMenu.css'
 
 export default function MobileNavMenu({ items, active, onSelect, title, desktopLayout = 'scroll' }) {
@@ -12,6 +13,7 @@ export default function MobileNavMenu({ items, active, onSelect, title, desktopL
 
   return (
     <>
+      {/* Mobile: hamburger bar */}
       <nav className="mnm-nav">
         <button className="mnm-hamburger" onClick={() => setOpen(true)} aria-label="Open menu">
           <span /><span /><span />
@@ -19,19 +21,16 @@ export default function MobileNavMenu({ items, active, onSelect, title, desktopL
         <span className="mnm-active-label">
           {activeItem?.icon} {activeItem?.label}
         </span>
-        <div className={`mnm-items${desktopLayout === 'wrap' ? ' mnm-items--wrap' : ''}`}>
-          {items.map(item => (
-            <button
-              key={item.id}
-              className={`mnm-item${active === item.id ? ' active' : ''}`}
-              onClick={() => onSelect(item.id)}
-            >
-              <span className="mnm-item-icon">{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
-        </div>
       </nav>
+
+      {/* Desktop: horizontal tabs via shared DesktopNavMenu */}
+      <DesktopNavMenu
+        items={items}
+        active={active}
+        onSelect={onSelect}
+        layout={desktopLayout}
+        className="mnm-desktop"
+      />
 
       <div className={`mnm-overlay${open ? ' open' : ''}`} onClick={() => setOpen(false)} />
 
@@ -44,10 +43,10 @@ export default function MobileNavMenu({ items, active, onSelect, title, desktopL
           {items.map(item => (
             <button
               key={item.id}
-              className={`mnm-item${active === item.id ? ' active' : ''}`}
+              className={`dnm-item${active === item.id ? ' active' : ''}`}
               onClick={() => select(item.id)}
             >
-              <span className="mnm-item-icon">{item.icon}</span>
+              <span className="dnm-item-icon">{item.icon}</span>
               {item.label}
             </button>
           ))}
