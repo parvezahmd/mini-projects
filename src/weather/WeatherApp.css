@@ -159,15 +159,19 @@
 }
 
 .weather-location-name {
+  background: none;
+  border: none;
   font-size: 0.875rem;
   font-weight: 500;
+  font-family: inherit;
   color: var(--color-text-primary);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
 }
 
-.weather-bar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.weather-location-name:hover {
+  color: var(--color-teal);
 }
 
 /* ── °C / °F segmented toggle ─────────────────────────────── */
@@ -199,25 +203,10 @@
   color: var(--color-teal);
 }
 
-.weather-change-btn {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  color: var(--color-text-secondary);
-  font-size: 0.78rem;
-  font-family: inherit;
-  padding: 0.25rem 0.65rem;
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-}
 
-.weather-change-btn:hover {
-  border-color: var(--color-teal-border);
-  color: var(--color-teal);
-}
-
-/* ── DesktopNavMenu override (not sticky here) ────────────── */
-.weather-dnm {
+/* ── Nav override: not sticky inside weather app ─────────── */
+.weather-app .mnm-desktop,
+.weather-app .dnm-nav {
   position: static;
 }
 
@@ -324,6 +313,55 @@
   color: var(--color-text-primary);
 }
 
+/* ── 24-hour strip (Current view) ────────────────────────── */
+.hourly-section {
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.hourly-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.65rem;
+}
+
+.hourly-chart {
+  display: block;
+  height: 104px;
+}
+
+/* ── Forecast view switcher ───────────────────────────────── */
+.forecast-view-switcher {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.forecast-view-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-tertiary);
+  font-size: 0.78rem;
+  font-family: inherit;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.forecast-view-btn.active {
+  background: var(--color-teal-bg);
+  color: var(--color-teal);
+  border-color: var(--color-teal-border);
+}
+
 /* ── 10-day forecast ──────────────────────────────────────── */
 .weather-forecast {
   display: flex;
@@ -355,72 +393,229 @@
   font-size: 0.82rem;
   color: var(--color-text-secondary);
   min-width: 0;
-}
-
-.forecast-range {
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.forecast-lo   { color: var(--color-text-secondary); }
-.forecast-dash { color: var(--color-text-muted); }
-.forecast-hi   { color: var(--color-text-primary); }
 
-.forecast-rain {
-  font-size: 0.75rem;
-  color: var(--color-text-tertiary);
-  white-space: nowrap;
-  flex-shrink: 0;
+/* ── Card grid ────────────────────────────────────────────── */
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
 }
 
-/* ── Monthly view ─────────────────────────────────────────── */
-.weather-monthly {
+.forecast-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1rem 0.75rem;
   display: flex;
   flex-direction: column;
-}
-
-.monthly-note {
-  font-size: 0.75rem;
-  color: var(--color-text-tertiary);
-  margin-bottom: 1rem;
-}
-
-.monthly-row {
-  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--color-border);
+  gap: 0.15rem;
+  text-align: center;
 }
 
-.monthly-row:last-child { border-bottom: none; }
+.fcard-day {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
 
-.monthly-name {
-  font-size: 0.875rem;
-  font-weight: 500;
+.fcard-icon { font-size: 2rem; line-height: 1; margin: 0.3rem 0; }
+
+.fcard-label {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.2rem;
+}
+
+.fcard-hi {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--color-text-primary);
-  min-width: 36px;
-  flex-shrink: 0;
 }
 
-.monthly-range {
-  flex: 1;
-  font-size: 0.9rem;
+.fcard-lo {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.fcard-rain {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+  margin-top: 0.2rem;
+}
+
+/* ── Temp bar elements (used inside .forecast-row flex) ───── */
+.fbar-lo {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-secondary);
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 30px;
+}
+
+.fbar-track {
+  flex: 2;
+  min-width: 40px;
+  position: relative;
+  height: 8px;
+  background: var(--color-bg-deep);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fbar-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(to right, #38bdf8, #fb923c);
+  min-width: 4px;
+}
+
+.fbar-hi {
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  flex-shrink: 0;
+  min-width: 38px;
+}
+
+.fbar-rain {
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 52px;
+}
+
+/* ── Timeline view ────────────────────────────────────────── */
+.forecast-timeline {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.forecast-timeline::-webkit-scrollbar { height: 4px; }
+.forecast-timeline::-webkit-scrollbar-track { background: transparent; }
+.forecast-timeline::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+.ftimeline-inner {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.ftimeline-chart-wrap {
+  position: relative;
+}
+
+.ftimeline-chart { display: block; }
+
+.ftimeline-label {
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ftimeline-label-hi { fill: #fb923c; }
+.ftimeline-label-lo { fill: #38bdf8; }
+
+/* ── Timeline zoom overlay (temp + time labels) ───────────── */
+.ftimeline-zoom-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  pointer-events: none;
+}
+
+@keyframes ftl-fadein { to { opacity: 1; } }
+
+.ftimeline-zoom-temp {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #fb923c;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  animation: ftl-fadein 0.15s ease 0.4s forwards;
+}
+
+.ftimeline-time-overlay {
+  position: relative;
+  height: 1.3rem;
+  pointer-events: none;
+}
+
+.ftimeline-zoom-time {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  opacity: 0;
+  animation: ftl-fadein 0.15s ease 0.4s forwards;
+}
+
+.ftimeline-cards {
+  display: flex;
+  gap: 10px;
+}
+
+.ftimeline-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  width: 78px;
+  flex-shrink: 0;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.35s ease, border-color 0.35s ease, background 0.35s ease;
+}
+
+.ftimeline-card.selected {
+  border-color: #fb923c;
+  background: rgba(251, 146, 60, 0.08);
+}
+
+.ftimeline-day {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.ftimeline-icon { font-size: 1.6rem; line-height: 1; }
+
+.ftimeline-range {
+  font-size: 0.72rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
-.monthly-lo { color: var(--color-text-secondary); }
-.monthly-hi { color: var(--color-text-primary); }
-
-.monthly-rain {
-  font-size: 0.78rem;
-  color: var(--color-text-tertiary);
-  white-space: nowrap;
-}
+.ftimeline-rain { font-size: 0.8rem; }
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media (min-width: 600px) {
@@ -429,4 +624,6 @@
     max-width: 100%;
   }
   .forecast-day { min-width: 130px; }
+  .forecast-grid { grid-template-columns: repeat(4, 1fr); }
+  .hourly-section { max-width: 100%; }
 }
